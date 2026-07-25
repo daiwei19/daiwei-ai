@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>健康咨询管理系统</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 顶部固定时钟栏 -->
+    <div class="top-clock-bar">
+        <span class="clock-icon">🕐</span>
+        <span class="clock-date" id="clockDate"></span>
+        <span class="clock-separator">|</span>
+        <span class="clock-time" id="clockTime">00:00:00</span>
+        <span class="clock-separator">|</span>
+        <span class="clock-weekday" id="clockWeekday"></span>
+    </div>
+
+    <div class="login-container">
+        <div class="login-box">
+            <h1>健康咨询管理系统</h1>
+            <div class="tabs">
+                <button class="tab-btn active" onclick="showTab('login')">登录</button>
+                <button class="tab-btn" onclick="showTab('register')">注册</button>
+            </div>
+            
+            <!-- 登录表单 -->
+            <div id="login" class="tab-content active">
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label>用户名</label>
+                        <input type="text" id="loginUsername" placeholder="请输入用户名" required>
+                    </div>
+                    <div class="form-group">
+                        <label>密码</label>
+                        <input type="password" id="loginPassword" placeholder="请输入密码" required>
+                    </div>
+                    <button type="submit" class="btn">登录</button>
+                </form>
+            </div>
+            
+            <!-- 注册表单 -->
+            <div id="register" class="tab-content">
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label>用户名</label>
+                        <input type="text" id="regUsername" placeholder="请输入用户名" required>
+                    </div>
+                    <div class="form-group">
+                        <label>密码</label>
+                        <input type="password" id="regPassword" placeholder="请输入密码" required>
+                    </div>
+                    <div class="form-group">
+                        <label>确认密码</label>
+                        <input type="password" id="regConfirmPassword" placeholder="请再次输入密码" required>
+                    </div>
+                    <button type="submit" class="btn">注册</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="script.js?v=20260723-2"></script>
+</body>
+</html>

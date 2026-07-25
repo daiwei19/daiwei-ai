@@ -1,0 +1,173 @@
+<!DOCTYPE html> 
+<html lang="zh-CN">  
+<head> 
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理员面板 - 健康咨询管理系统</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 顶部固定时钟栏 -->
+    <div class="top-clock-bar">
+        <span class="clock-icon">🕐</span>
+        <span class="clock-date" id="clockDate"></span>
+        <span class="clock-separator">|</span>
+        <span class="clock-time" id="clockTime">00:00:00</span>
+        <span class="clock-separator">|</span>
+        <span class="clock-weekday" id="clockWeekday"></span>
+    </div>
+
+    <div class="admin-container">
+        <!-- 侧边栏 -->
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='2'%3E%3Cpath d='M12 4v4m0 8v4M8 12H4m16 0h-4'/%3E%3Ccircle cx='12' cy='12' r='3'/%3E%3C/svg%3E" alt="Logo">
+                <span>健康咨询</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><button class="nav-btn active" onclick="showAdminSection('users')"><i>👥</i> 用户管理</button></li>
+                    <li><button class="nav-btn" onclick="showAdminSection('healthData')"><i>📈</i> 健康数据</button></li>
+                    <li><button class="nav-btn" onclick="showAdminSection('consultations')"><i>💬</i> 咨询记录</button></li>
+                </ul>
+            </nav>
+            <div class="sidebar-user">
+                <div class="user-info">
+                    <div class="user-avatar">A</div>
+                    <div class="user-details">
+                        <span>管理员</span>
+                        <small>系统管理员</small>
+                    </div>
+                </div>
+                <button class="logout-btn" onclick="logout()">退出登录</button>
+            </div>
+        </aside>
+        
+        <!-- 主内容区域 -->
+        <div class="main-content">
+            <header>
+                <div class="header-content">
+                    <h1>管理员面板</h1>
+                </div>
+            </header>
+            
+            <main>
+                <!-- 用户管理 -->
+                <section id="users" class="admin-section active">
+                    <div class="section-header">
+                        <h2>用户管理</h2>
+                        <button class="btn export-btn" onclick="exportUsers()">导出用户数据</button>
+                    </div>
+                    <input type="text" id="userSearch" placeholder="搜索用户名..." onkeyup="searchUsers()">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>用户名</th>
+                                <th>邮箱</th>
+                                <th>姓名</th>
+                                <th>性别</th>
+                                <th>年龄</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody"></tbody>
+                    </table>
+                </section>
+                
+                <!-- 健康数据 -->
+                <section id="healthData" class="admin-section">
+                    <div class="section-header">
+                        <h2>健康数据管理</h2>
+                        <button class="btn export-btn" onclick="exportHealthData()">导出健康数据</button>
+                    </div>
+                    <select id="healthUserFilter" onchange="filterHealthData()">
+                        <option value="">全部用户</option>
+                    </select>
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>用户</th>
+                                <th>日期</th>
+                                <th>体温</th>
+                                <th>血压</th>
+                                <th>心率</th>
+                                <th>血糖</th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="healthDataTableBody"></tbody>
+                    </table>
+                </section>
+                
+                <!-- 咨询记录 -->
+                <section id="consultations" class="admin-section">
+                    <div class="section-header">
+                        <h2>咨询记录管理</h2>
+                        <button class="btn export-btn" onclick="exportConsultations()">导出咨询数据</button>
+                    </div>
+                    <select id="consultUserFilter" onchange="filterConsultations()">
+                        <option value="">全部用户</option>
+                    </select>
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>用户</th>
+                                <th>日期</th>
+                                <th>症状描述</th>
+                                <th>持续时间</th>
+                                <th>其他症状</th>
+                                <th>科室建议</th>
+                                <th>治疗建议</th>
+                                <th>用药建议</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="consultationsTableBody"></tbody>
+                    </table>
+                </section>
+            </main>
+        </div>
+        
+        <!-- 用户编辑弹窗 -->
+        <div id="editModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeEditModal()">&times;</span>
+                <h3>编辑用户信息</h3>
+                <form id="editForm">
+                    <input type="hidden" id="editUserId">
+                    <div class="form-group">
+                        <label>用户名</label>
+                        <input type="text" id="editUsername" required>
+                    </div>
+                    <div class="form-group">
+                        <label>邮箱</label>
+                        <input type="email" id="editEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label>姓名</label>
+                        <input type="text" id="editName">
+                    </div>
+                    <div class="form-group">
+                        <label>性别</label>
+                        <select id="editGender">
+                            <option value="">请选择</option>
+                            <option value="男">男</option>
+                            <option value="女">女</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>年龄</label>
+                        <input type="number" id="editAge" min="1" max="120">
+                    </div>
+                    <button type="submit" class="btn">保存修改</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="script.js?v=20260723-3"></script>
+</body>
+</html>

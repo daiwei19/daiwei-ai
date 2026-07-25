@@ -1,0 +1,14 @@
+{
+  "name": "health-consultation-system",
+  "version": "1.0.0",
+  "description": "健康咨询管理系统，使用 MySQL 存储用户和管理员数据",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "express": "^4.19.0",
+    "mysql2": "^3.9.0"
+  }
+}

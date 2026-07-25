@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户仪表盘 - 健康咨询管理系统</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 顶部固定时钟栏 -->
+    <div class="top-clock-bar">
+        <span class="clock-icon">🕐</span>
+        <span class="clock-date" id="clockDate"></span>
+        <span class="clock-separator">|</span>
+        <span class="clock-time" id="clockTime">00:00:00</span>
+        <span class="clock-separator">|</span>
+        <span class="clock-weekday" id="clockWeekday"></span>
+    </div>
+
+    <div class="dashboard-container">
+        <!-- 侧边栏 -->
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='2'%3E%3Cpath d='M12 4v4m0 8v4M8 12H4m16 0h-4'/%3E%3Ccircle cx='12' cy='12' r='3'/%3E%3C/svg%3E" alt="Logo">
+                <span>健康咨询</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><button class="nav-btn active" onclick="showSection('profile')"><i>👤</i> 个人资料</button></li>
+                    <li><button class="nav-btn" onclick="showSection('health')"><i>📊</i> 健康数据</button></li>
+                    <li><button class="nav-btn" onclick="showSection('consultation')"><i>💬</i> 病情咨询</button></li>
+                    <li><button class="nav-btn" onclick="showSection('history')"><i>📋</i> 历史记录</button></li>
+                </ul>
+            </nav>
+            <div class="sidebar-user">
+                <div class="user-info">
+                    <div class="user-avatar">U</div>
+                    <div class="user-details">
+                        <span id="welcomeText">用户</span>
+                        <small>普通用户</small>
+                    </div>
+                </div>
+                <button class="logout-btn" onclick="logout()">退出登录</button>
+            </div>
+        </aside>
+        
+        <!-- 主内容区域 -->
+        <div class="main-content">
+            <header>
+                <div class="header-content">
+                    <h1>健康咨询管理系统</h1>
+                </div>
+            </header>
+            
+            <main>
+                <!-- 个人资料 -->
+                <section id="profile" class="section active">
+                    <h2>个人资料</h2>
+                    <form id="profileForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>姓名</label>
+                                <input type="text" id="profileName" placeholder="请输入姓名">
+                            </div>
+                            <div class="form-group">
+                                <label>性别</label>
+                                <select id="profileGender">
+                                    <option value="">请选择</option>
+                                    <option value="男">男</option>
+                                    <option value="女">女</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>年龄</label>
+                                <input type="number" id="profileAge" placeholder="请输入年龄" min="1" max="120">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>身高(cm)</label>
+                                <input type="number" id="profileHeight" placeholder="请输入身高" min="50" max="250">
+                            </div>
+                            <div class="form-group">
+                                <label>体重(kg)</label>
+                                <input type="number" id="profileWeight" placeholder="请输入体重" min="10" max="300">
+                            </div>
+                            <div class="form-group">
+                                <label>联系方式</label>
+                                <input type="tel" id="profilePhone" placeholder="请输入手机号">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn">保存资料</button>
+                    </form>
+                </section>
+                
+                <!-- 健康数据 -->
+                <section id="health" class="section">
+                    <h2>健康数据录入</h2>
+                    <form id="healthForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>体温(°C)</label>
+                                <input type="number" id="healthTemp" placeholder="请输入体温" step="0.1" min="35" max="45">
+                            </div>
+                            <div class="form-group">
+                                <label>血压(收缩压/舒张压 mmHg)</label>
+                                <input type="text" id="healthBloodPressure" placeholder="如: 120/80">
+                            </div>
+                            <div class="form-group">
+                                <label>心率(次/分钟)</label>
+                                <input type="number" id="healthHeartRate" placeholder="请输入心率" min="30" max="200">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>血糖(mmol/L)</label>
+                                <input type="number" id="healthBloodSugar" placeholder="请输入血糖" step="0.1" min="2" max="30">
+                            </div>
+                            <div class="form-group">
+                                <label>胆固醇(mmol/L)</label>
+                                <input type="number" id="healthCholesterol" placeholder="请输入胆固醇" step="0.1" min="1" max="15">
+                            </div>
+                            <div class="form-group">
+                                <label>血氧饱和度(%)</label>
+                                <input type="number" id="healthOxygen" placeholder="请输入血氧饱和度" min="60" max="100">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn">提交健康数据</button>
+                    </form>
+                    
+                    <div id="healthResult" class="result-box" style="display: none;">
+                        <h3>健康数据分析结果</h3>
+                        <div id="healthAnalysis"></div>
+                    </div>
+                </section>
+                
+                <!-- 病情咨询 -->
+                <section id="consultation" class="section">
+                    <h2>病情咨询</h2>
+                    <form id="consultationForm">
+                        <div class="form-group">
+                            <label>症状描述</label>
+                            <textarea id="consultSymptoms" placeholder="请详细描述您的症状，如：头痛、发烧、咳嗽等..." rows="5"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>症状持续时间</label>
+                            <select id="consultDuration">
+                                <option value="">请选择</option>
+                                <option value="1天以内">1天以内</option>
+                                <option value="1-3天">1-3天</option>
+                                <option value="3-7天">3-7天</option>
+                                <option value="1-2周">1-2周</option>
+                                <option value="2周以上">2周以上</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>是否有其他症状</label>
+                            <input type="text" id="consultOtherSymptoms" placeholder="如有其他症状请描述">
+                        </div>
+                        <button type="submit" class="btn">提交咨询</button>
+                    </form>
+                    
+                    <div id="consultationResult" class="result-box" style="display: none;">
+                        <h3>病情分析结果</h3>
+                        <div id="consultationAnalysis"></div>
+                    </div>
+                </section>
+                
+                <!-- 历史记录 -->
+                <section id="history" class="section">
+                    <h2>历史记录</h2>
+                    <div class="history-tabs">
+                        <button class="history-tab active" onclick="showHistoryTab('healthHistory')">健康数据历史</button>
+                        <button class="history-tab" onclick="showHistoryTab('consultHistory')">咨询历史</button>
+                    </div>
+                    
+                    <div id="healthHistory" class="history-content active">
+                        <table class="history-table">
+                            <thead>
+                                <tr>
+                                    <th>日期</th>
+                                    <th>体温</th>
+                                    <th>血压</th>
+                                    <th>心率</th>
+                                    <th>血糖</th>
+                                    <th>状态</th>
+                                </tr>
+                            </thead>
+                            <tbody id="healthHistoryBody"></tbody>
+                        </table>
+                        <div id="noHealthHistory" style="display: none;">暂无健康数据记录</div>
+                    </div>
+                    
+                    <div id="consultHistory" class="history-content">
+                        <table class="history-table">
+                            <thead>
+                                <tr>
+                                    <th>日期</th>
+                                    <th>症状描述</th>
+                                    <th>科室建议</th>
+                                    <th>治疗建议</th>
+                                </tr>
+                            </thead>
+                            <tbody id="consultHistoryBody"></tbody>
+                        </table>
+                        <div id="noConsultHistory" style="display: none;">暂无咨询记录</div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+    <script src="script.js?v=20260723-3"></script>
+</body>
+</html>
